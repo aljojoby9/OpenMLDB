@@ -620,7 +620,10 @@ EqualKey KeyGenerator::GenEqual(const Row& row, const Row& parameter) {
     // TODO(wtz) 避免不必要的row project
     EqualKey out;
     if (row.size() == 0) {
+        // An empty slice is not a key. Equality must not hit the NULL bucket.
+        // Gen() still returns NONETOKEN, so GROUP BY and PARTITION BY are unchanged.
         out.value = codec::NONETOKEN;
+        out.has_null = true;
         return out;
     }
     Row key_row = CoreAPI::RowProject(fn_, row, parameter, true);

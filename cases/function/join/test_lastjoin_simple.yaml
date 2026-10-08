@@ -1153,7 +1153,7 @@ cases:
         - [ null,2,null,null ]
         - [ "aa",3,40,1590738993000 ]
   - id: null-eq-5
-    desc: IS NULL still matches a NULL column
+    desc: isnull() still matches a NULL column
     inputs:
       - columns: [ "c1 string","c2 int","c4 timestamp" ]
         indexs: [ "index1:c1:c4" ]
@@ -1166,7 +1166,7 @@ cases:
           - [ "aa",NULL,10,1590738991000 ]
           - [ "aa",5,20,1590738992000 ]
           - [ "bb",NULL,30,1590738993000 ]
-    sql: select {0}.c1,{0}.c2,{1}.v from {0} last join {1} ORDER BY {1}.c4 on {0}.c1={1}.c1 and {1}.c2 is null;
+    sql: select {0}.c1,{0}.c2,{1}.v from {0} last join {1} ORDER BY {1}.c4 on {0}.c1={1}.c1 and isnull({1}.c2);
     expect:
       columns: [ "c1 string","c2 int","v int" ]
       order: c1
